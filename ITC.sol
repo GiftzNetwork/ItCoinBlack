@@ -2,8 +2,8 @@ pragma solidity ^0.4.18;
 import "./EtherealFoundationOwned.sol";
 //import "./EtherealMine.sol";
 
-contract EtherealToken is EtherealFoundationOwned {
-    string public constant CONTRACT_NAME = "EtherealToken";
+contract GiftzNetworkToken is EtherealFoundationOwned {
+    string public constant CONTRACT_NAME = "GiftzNetworkToken";
     string public constant CONTRACT_VERSION = "A";
     
     string public constant name = "itCoin® Black";
@@ -15,8 +15,43 @@ contract EtherealToken is EtherealFoundationOwned {
     mapping(address => mapping(address=> uint256)) private allowed;
     mapping(address => bool) private lockedAccounts;  
 	
-    
-    function EtherealToken(
+	/*
+		Incomming Ether
+	*/
+	
+    event RecievedEth(address indexed _from, uint256 _value);
+	//this is the fallback
+	function () payable public {
+		RecievedEth(msg.sender, msg.value);		
+	}
+	event TransferedEth(address indexed _to, uint256 _value);
+	function FoundationTransfer(address _to, uint256 amtEth, uint256 amtToken) public onlyOwner
+	{
+		require(this.balance >= amtEth && balances[this] >= amtToken);
+		
+		if(amtEth >0)
+		{
+			_to.transfer(amtEth);
+			TransferedEth(_to, amtEth);
+		}
+		
+		if(amtToken > 0)
+		{
+			balances[this] -= amtToken;
+			balances[_to] += amtToken;
+			Transfer(this, _to, amtToken);
+		}
+		
+		
+	}
+	
+	/*
+		End Incomming Ether
+	*/
+	
+	
+	
+    function GiftzNetworkToken(
 		uint256 initialTotalSupply, 
 		address[] addresses, 
 		uint256[] initialBalances, 
