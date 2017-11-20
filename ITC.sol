@@ -1,6 +1,5 @@
 pragma solidity ^0.4.18;
 import "./EtherealFoundationOwned.sol";
-//import "./EtherealMine.sol";
 
 contract GiftzNetworkToken is EtherealFoundationOwned {
     string public constant CONTRACT_NAME = "GiftzNetworkToken";
@@ -27,7 +26,7 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
 	event TransferedEth(address indexed _to, uint256 _value);
 	function FoundationTransfer(address _to, uint256 amtEth, uint256 amtToken) public onlyOwner
 	{
-		require(this.balance >= amtEth && balances[this] >= amtToken);
+		require(this.balance >= amtEth && balances[this] >= amtToken );
 		
 		if(amtEth >0)
 		{
@@ -37,6 +36,7 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
 		
 		if(amtToken > 0)
 		{
+			require(balances[_to] + amtToken > balances[_to]);
 			balances[this] -= amtToken;
 			balances[_to] += amtToken;
 			Transfer(this, _to, amtToken);
@@ -86,6 +86,8 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
     event SoldToken(address _buyer, uint256 _value, string note);
     function BuyToken(address _buyer, uint256 _value, string note) public onlyOwner
     {
+		require(balances[this] >= _value && balances[_buyer] + _value > balances[_buyer]);
+		
         SoldToken( _buyer,  _value,  note);
         balances[this] -= _value;
         balances[_buyer] += _value;
@@ -111,15 +113,15 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
     }
     
     
-    function totalSupply() constant public returns (uint)
+    function totalSupply() constant public returns (uint256)
     {
         return currentSupply;
     }
-    function balanceOf(address _owner) constant public returns (uint balance)
+    function balanceOf(address _owner) constant public returns (uint256 balance)
     {
         return balances[_owner];
     }
-    function transfer(address _to, uint _value) public notLocked returns (bool success) {
+    function transfer(address _to, uint256 _value) public notLocked returns (bool success) {
         require(tradeable);
          if (balances[msg.sender] >= _value && _value > 0 && balances[_to] + _value > balances[_to]) {
              Transfer( msg.sender, _to,  _value);
