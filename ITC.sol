@@ -1,9 +1,10 @@
 pragma solidity ^0.4.18;
 import "./EtherealFoundationOwned.sol";
+//import "./EtherealMine.sol";
 
 contract GiftzNetworkToken is EtherealFoundationOwned {
     string public constant CONTRACT_NAME = "GiftzNetworkToken";
-    string public constant CONTRACT_VERSION = "A";
+    string public constant CONTRACT_VERSION = "B";
     
     string public constant name = "itCoin® Black";
     string public constant symbol = "ITC";
@@ -16,13 +17,13 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
 	
 	/*
 		Incomming Ether
-	*/
-	
-    event RecievedEth(address indexed _from, uint256 _value);
+	*/	
+    event RecievedEth(address indexed _from, uint256 _value, uint256 timeStamp);
 	//this is the fallback
 	function () payable public {
-		RecievedEth(msg.sender, msg.value);		
+		RecievedEth(msg.sender, msg.value, now);		
 	}
+	
 	event TransferedEth(address indexed _to, uint256 _value);
 	function FoundationTransfer(address _to, uint256 amtEth, uint256 amtToken) public onlyOwner
 	{
@@ -43,8 +44,7 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
 		}
 		
 		
-	}
-	
+	}	
 	/*
 		End Incomming Ether
 	*/
@@ -83,7 +83,7 @@ contract GiftzNetworkToken is EtherealFoundationOwned {
     }
     
 	
-    event SoldToken(address _buyer, uint256 _value, string note);
+    event SoldToken(address indexed _buyer, uint256 _value, bytes32 note);
     function BuyToken(address _buyer, uint256 _value, string note) public onlyOwner
     {
 		require(balances[this] >= _value && balances[_buyer] + _value > balances[_buyer]);
