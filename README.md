@@ -1,10 +1,10 @@
 # ItCoinBlack
 ItCoinBlack ERC20 token
 
-Ropsten Test Net: 0xdaab8a09aed3b98df4fffef85e78cd6f513de7d0
+Contract Address: 0x96d8fbf95f72f5abe9ef04f1ade94e1ba79be508
 
 Smart-contract Info:
-https://ropsten.etherscan.io/address/0xdaab8a09aed3b98df4fffef85e78cd6f513de7d0
+https://etherscan.io/address/0x96d8fbf95f72f5abe9ef04f1ade94e1ba79be508
 
 Token info:
-https://ropsten.etherscan.io/token/0xdaab8a09aed3b98df4fffef85e78cd6f513de7d0
+https://etherscan.io/token/0x96d8fbf95f72f5abe9ef04f1ade94e1ba79be508
